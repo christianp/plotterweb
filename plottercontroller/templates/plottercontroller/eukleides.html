@@ -1,0 +1,176 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Numbas Eukleides extension playground</title>
+        <script src="{% static "eukleides/lib/jme-runtime.js" %}"></script>
+        <script src="{% static "eukleides/lib/locales.js" %}"></script>
+        <script src="{% static "eukleides/extension.js" %}"></script>
+        <script src="{% static "eukleides/dev_playground.js" %}" type="module"></script>
+        <style>
+body {
+    display: grid;
+    grid: [top] auto [a] 1fr [b] 1fr [c] /1fr 1fr;
+    grid-gap: 0.2em;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    background: #333;
+}
+body.error {
+    grid-template-rows: [a] 1fr [b] 1fr [c] [err-start] max-content [err-end];
+    background: #633;
+}
+body > * {
+    background: white;
+}
+* {
+    box-sizing: border-box;
+}
+#plotter-controls {
+    grid-row: top / a;
+    grid-column: 1 / 3;
+}
+#output { 
+    grid-row: b / c;
+    grid-column: 1;
+    padding: 2px;
+}
+#output > svg {
+    max-height: 50vh;
+    border: 1px dashed;
+    width: 140mm;
+    height: 110mm;
+}
+
+#code {
+    grid-row: a / b;
+    padding: 1em;
+    font-size: 1.5em;
+    height: 100%;
+    margin: 0;
+    border: 0;
+    resize: none;
+    overflow-y: scroll;
+}
+#help {
+    grid-row: a / c;
+    padding: 1em;
+    overflow-y: scroll;
+}
+
+#help h1 {
+    text-align: center;
+    font-size: 2rem;
+}
+
+#help * ~ dt {
+    margin-top: 2em;
+}
+#help dt {
+    background: #eee;
+    padding: 0.3em 1em;
+}
+#help dt.active {
+    background: hsl(120, 70%, 90.3%);
+    font-weight: bold;
+}
+#help dd > ul {
+    padding: 0;
+}
+#help dd li ~ li {
+    margin-top: 0.5em;
+}
+.signature {
+    word-spacing: 0.2em;
+}
+.signature .function-name {
+    font-size: 1.3em;
+}
+.signature .function-bracket {
+    font-size: 1.3em;
+}
+.signature code.name {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+.signature code.type {
+    font-style: italic;
+    background: #eee;
+    padding: 0.2em;
+    word-spacing: normal;
+}
+
+.description {
+    margin: 0.2em 0 0 0;
+    font-style: italic;
+}
+
+#fn-alphabet {
+    display: flex;
+    position: sticky;
+    top: -1em;
+    left: 0;
+    background: #555;
+    padding: 0.3em;
+    z-index: 100;
+    font-family: sans-serif;
+    justify-content: space-evenly;
+}
+#fn-alphabet a {
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 0.2em;
+}
+dt {
+    position: relative;
+}
+a.anchor {
+    position: absolute;
+    top: -2em;
+}
+
+body.error #output {
+  background: hsl(0,50%,90%);
+}
+body:not(.error) #error {
+    display: none;
+}
+body.error #error {
+    grid-row: err;
+    grid-column: 1 / 3;
+    background: red;
+    color: white;
+    padding: 0.5em 0.5em;
+}
+        </style>
+    </head>
+    <body>
+        <div id="plotter-controls">
+        {% include "plottercontroller/controls.html" %}
+        </div>
+        <div id="error"></div>
+        <textarea id="code">
+eukleides("A diagram",[
+triangle()
+])
+        </textarea>
+        <section id="output">
+        </section>
+        <section id="help">
+            <h1>Help</h1>
+            <h2>Data types</h2>
+            <dl id="types"></dl>
+            <h2>Drawing modifiers</h2>
+            <dl id="modifiers"></dl>
+            <h2>Functions</h2>
+            <div>
+                <div id="fn-alphabet">
+                </div>
+                <dl id="function-definitions"></dl>
+            </div>
+        </section>
+    </body>
+</html>

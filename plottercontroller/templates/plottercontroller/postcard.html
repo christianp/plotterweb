@@ -1,0 +1,50 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <style>
+            #page svg {
+                width: 140mm;
+                height: 110mm;
+                border: 1px solid lightgray;
+            }
+            circle, rect, path,polyline {
+                fill: none;
+            }
+            line,circle,rect,path,polyline {
+                stroke-width: calc(0.7px/2);
+            }
+            svg :not([stroke]) {
+                stroke: black;
+            }
+
+            textarea {
+                width: 100%;
+                height: 10em;
+            }
+        </style>
+        <script src="{% static 'postcard.js' %}" defer type="module"></script>
+        <script type="module">
+            import {Controller} from "{% static 'controller.js' %}";
+            
+            new Controller(() => document.querySelector('#page svg'));
+        </script>
+    </head>
+    <body>
+        {% include "plottercontroller/controls.html" %}
+
+        <div id="page">
+            <svg width="140" height="110" viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg">
+            </svg>
+        </div>
+        
+        <label for="message">Message</label>
+        <textarea id="message"></textarea>
+        <select class="font" id="message-font"></select>
+
+        <label for="address">Address</label>
+        <textarea id="address"></textarea>
+        <select class="font" id="address-font"></select>
+
+    </body>
+</html>
