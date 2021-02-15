@@ -1,0 +1,17 @@
+eukleides("A diagram",-5,1.6,7.425,5.25,let(
+D, 5,
+R, 1,
+n, 5,
+step,0.001,
+spiral, polygon(map(
+  let(rr, R+(D-R)*t, theta, 2*pi*n*t,
+    point(rr*cos(theta), -rr*sin(theta))
+  )
+, t, 0..1#step)) open
+,
+[
+  spiral
+, ((origin..point(R,0))+vector(0,0.1)) dashed arrows label("R") color1
+, ((point(D,0)..point(D-(D-R)/n,0))+vector(0,-0.1)) dashed arrows label("h") color1
+]
+))       

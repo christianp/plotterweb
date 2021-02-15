@@ -1,0 +1,29 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <title>Drawings</title>
+        <script src="{% static 'drawings.js' %}" type="module"></script>
+        <link rel="stylesheet" href="{% static 'drawings.css' %}">
+    </head>
+    <body>
+        {% include "plottercontroller/controls.html" %}
+        <header>
+            <h1>Drawings</h1>
+        </header>
+        <main>
+            <ul id="drawings">
+                {% for drawing in object_list %}
+                <li class="drawing">
+                    <div class="svg">
+                        {{drawing.svg|safe}}
+                    </div>
+                    <time datetime="{{drawing.creation_time.isoformat}}">{{drawing.creation_time}}</time>
+                    {% if drawing.location %}<a href="{{drawing.location}}">{{drawing.location}}</a>{% endif %}
+                    <button type="button" class="plot">Plot</button>
+                </li>
+                {% endfor %}
+            </ul>
+        </main>
+    </body>
+</html>

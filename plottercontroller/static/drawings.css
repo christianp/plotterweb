@@ -1,0 +1,51 @@
+* {
+    border-collapse: collapse;
+}
+
+#drawings {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.drawing {
+    padding: 2em;
+    margin: 1em 1em;
+    background: #eee;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1em;
+    grid-template-areas: 
+        "pic pic" "time url" "control control";
+    width: 25rem;
+    grid-template-rows: auto min-content min-content;
+}
+
+.drawing > .svg {
+    grid-area: pic;
+    justify-self: center;
+    background: white;
+}
+
+.drawing > time {
+    grid-area: time;
+}
+.drawing > a {
+    grid-area: url;
+}
+.drawing > button {
+    grid-area: control;
+}
+
+.drawing .svg svg {
+    max-width: 100%;
+    height: 40vh;
+}
+
+.drawing .svg svg *:not([fill]) {
+    fill: none;
+}
+
+.drawing .svg svg *:not([stroke-width]) {
+    stroke-width: calc(0.7px/2);
+}
+

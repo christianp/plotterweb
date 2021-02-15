@@ -1,0 +1,9 @@
+:root {
+    --pen-colour: black;
+}
+#pen-colour {
+    display: inline-block;
+    width: 10em;
+    height: 1em;
+    background-color: var(--pen-colour);
+}

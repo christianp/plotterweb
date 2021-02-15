@@ -1,0 +1,56 @@
+eukleides("A diagram",0,2.8,1,12,let(
+partition,[
+[5,3,3,2],
+[5,1,1],
+[3,1]
+],
+maxz, max(map(max(row),row,partition)),
+maxx, max(map(len(row),row,partition)),
+maxy, len(partition),
+up, vector(0,1),
+an, 5pi/6,
+left, vector(cos(an),sin(an)),
+right,vector(-cos(an),sin(an)),
+dleft, left-up,
+dright, right-up,
+rl, origin..(origin+up)..(origin+up+left)..(origin+up+dleft),
+rr, origin..(origin+up)..(origin+up+right)..(origin+up+dright),
+ru, origin..(origin+right)..(origin+right+dright)..(origin+dright),
+rhombuses, map(
+  let(
+    row,partition[y],
+    map(
+      let(
+        h,row[x],
+        z1, if(y<len(partition)-1,if(x<len(partition[y+1]),partition[y+1][x],0),0),
+       z2, if(x<len(row)-1,row[x+1],0),
+        [
+  ([ru+h*up+x*(right-up)+y*(left-up)+left] + map(rl+z*up+x*(right-up)+y*(left-up),z,z1..(h-1))+map(rr+z*up+x*(right-up)+y*(left-up),z,z2..(h-1))) color1
+, if(x=0 and h<maxz, map(rr+z*up+(y+1)*dleft,z,h+1..maxz),[])
+, if(y=0 and h<maxz, map(rl+z*up+(x+1)*dright,z,h+1..maxz),[])
+, if(x=0 and len(row)<maxx, map(ru+dright*(xx-1)+dleft*y,xx,len(row)..maxx-1),[])
+        ]
+      )
+      ,x,0..len(row)-1
+    )
+  )
+, y
+, 0..len(partition)-1
+),
+paths,map(let(
+z1,partition[0][x],
+[origin+z1*up+right+x*dright]+flatten(map(let(
+  row, partition[y],
+  h, if(x<len(row),row[x],0),
+  z2, if(y<maxy-1,if(x<len(partition[y+1]),partition[y+1][x],0),0),
+  [origin+h*up+y*dleft+x*dright]+map(origin+z*up+y*dleft+x*dright,z,h-1..z2#-1)
+),
+y,0..maxy-1
+))),
+x,0..maxx-1),
+[
+  rhombuses
+, map((polygon(p)+(left*0.5)) open dashed,p,paths) color2 size(2)
+, map(map(c+left*0.5,c,p),p,paths) color2 size(2)
+]
+))

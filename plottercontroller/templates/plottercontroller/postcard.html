@@ -2,10 +2,11 @@
 <!doctype html>
 <html>
     <head>
+        <title>Postcard maker</title>
         <style>
             #page svg {
-                width: 140mm;
-                height: 110mm;
+                width: 148.5mm;
+                height: 105mm;
                 border: 1px solid lightgray;
             }
             circle, rect, path,polyline {
@@ -23,6 +24,10 @@
                 height: 10em;
             }
         </style>
+        {% include "plottercontroller/mathjax_script.html" %}
+        <script>
+            const MY_ADDRESS = '{{MY_ADDRESS}}';
+        </script>
         <script src="{% static 'postcard.js' %}" defer type="module"></script>
         <script type="module">
             import {Controller} from "{% static 'controller.js' %}";
@@ -34,17 +39,19 @@
         {% include "plottercontroller/controls.html" %}
 
         <div id="page">
-            <svg width="140" height="110" viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg">
+            <svg width="148.5" height="105" viewBox="0 0 148.5 105" xmlns="http://www.w3.org/2000/svg">
             </svg>
         </div>
         
         <label for="message">Message</label>
         <textarea id="message"></textarea>
         <select class="font" id="message-font"></select>
+        <input type="number" min="1" max="20" id="message-size" value="6" step="0.1">
 
         <label for="address">Address</label>
         <textarea id="address"></textarea>
-        <select class="font" id="address-font"></select>
 
+        <label for="section-split">Section split</label>
+        <input type="range" min="0" max="1" id="section-split" value="0.6a" step="0.01">
     </body>
 </html>

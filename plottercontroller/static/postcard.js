@@ -1,26 +1,40 @@
 import {text, dash, attr, choice,polyline, path,fill,rect,line,circle,uniform,element} from '/static/page.js';
 import {Controller} from './controller.js';
 
+const TOPMARGIN = 15;
+const [W,H] = [297/2, 210/2];
+const MARGIN = 6;
+const HMARGIN = 10;
+
 new Controller(() => document.querySelector('#page svg'));
 
 const message_area = document.getElementById('message');
 const message_font_picker = document.getElementById('message-font');
+const message_size_input = document.getElementById('message-size');
+const section_split_input = document.getElementById('section-split');
 const address_area = document.getElementById('address');
-const address_font_picker = document.getElementById('address-font');
 
 function draw() {
-    const svg = document.querySelector('#page svg');
-    svg.innerHTML = '';
+    mathjax_ready.then(() => {
+        const svg = document.querySelector('#page svg');
+        svg.innerHTML = '';
 
-    const message = message_area.value;
-    const address = address_area.value;
+        const MESSAGE_WIDTH = parseFloat(section_split_input.value);
 
-    text(address.trim(),75,20, {fontname: address_font_picker.value, size: 2, halign: 'center', valign: 'center', maxwidth: 60, maxheight: 70, fit_width: true});
-    text(message.trim(),5,20, {fontname: message_font_picker.value, size: 6, halign: 'left', valign: 'center', maxwidth: 60, maxheight: 70, fit_width: false});
+        const message = message_area.value;
+        const address = address_area.value;
+
+        text(address.trim(),W*MESSAGE_WIDTH + HMARGIN,TOPMARGIN+MARGIN, {fontname: 'EMSReadability', size: 2, halign: 'center', valign: 'center', maxwidth: (1-MESSAGE_WIDTH)*W-2*HMARGIN, maxheight: H-2*MARGIN-TOPMARGIN, fit_width: true});
+        const message_size = parseFloat(message_size_input.value);
+        text(message.trim(),HMARGIN,TOPMARGIN+MARGIN+message_size, {fontname: message_font_picker.value, size: message_size, halign: 'left', valign: 'top', maxwidth: MESSAGE_WIDTH*W-2*HMARGIN, maxheight: H-2*MARGIN-message_size-TOPMARGIN, fit_width: false});
+        text(`From: ${MY_ADDRESS}`,W/2, H-MARGIN/2, {fontname: 'EMSReadability', halign: 'center', size: 3});
+        line(W*MESSAGE_WIDTH,TOPMARGIN+(H-TOPMARGIN)/8,W*MESSAGE_WIDTH,TOPMARGIN+(H-TOPMARGIN)*7/8);
+    });
 }
 
 message_area.addEventListener('input',draw)
+message_size_input.addEventListener('input',draw)
+section_split_input.addEventListener('input',draw)
 address_area.addEventListener('input',draw)
 message_font_picker.addEventListener('input',draw)
-address_font_picker.addEventListener('input',draw)
 draw();

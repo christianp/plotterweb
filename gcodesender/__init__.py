@@ -19,10 +19,25 @@ class ScriptStage(object):
     def __str__(self):
         return self.reason
 
+    def as_json(self):
+        return {
+            'message': self.reason,
+        }
+
 class ChangePenStage(ScriptStage):
     def __init__(self,colour):
         self.reason = f'Change the pen to {colour}'
         self.colour = colour
+
+    def as_json(self):
+        data = super().as_json()
+        data.update({
+            'colour': self.colour,
+        })
+        return data
+
+class SerialException(Exception):
+    pass
 
 class GCodeSender(object):
 
@@ -74,6 +89,9 @@ class GCodeSender(object):
         self.debug = debug
 
         self.current_pos = (0,0)
+
+    def reset_connection(self, device):
+        self.device = device
         
     def format_number(self, n):
         """
@@ -167,7 +185,10 @@ class GCodeSender(object):
         s = self.device
         
         if startline==0:
-            s.reset_input_buffer()
+            try:
+                s.reset_input_buffer()
+            except Exception as e:
+                raise SerialException()
             
             s.write(b'\r\n')
             s.readline()
@@ -343,7 +364,7 @@ class GCodeSender(object):
             Argument:
                 colour - the colour to change to.
         """
-        if self.colour is not None and self.colour != colour:
+        if self.colour != colour:
             self.return_home()
             self.pen_up()
             self.staged_script.append(ChangePenStage(colour))

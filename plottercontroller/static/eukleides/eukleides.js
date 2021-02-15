@@ -1742,7 +1742,7 @@ class SVGDrawer extends Drawer {
         super.setup_frame(min_x,min_y,max_x,max_y,scale);
 
         this.svg.setAttribute('viewBox',`${dp(min_x)} ${dp(min_y)} ${dp(max_x-min_x)} ${dp(max_y-min_y)}`);
-        this.maing.setAttribute('transform',`scale(${scale} ${-scale}) translate(0 ${min_y-max_y})`);
+        this.maing.setAttribute('transform',`scale(${scale} ${-scale})`);
     }
 
     check_color() { }
@@ -1764,6 +1764,7 @@ class SVGDrawer extends Drawer {
             }
         }
         e.setAttribute('fill',this.local.color);
+        e.setAttribute('stroke','none');
         e.style.opacity = this.local.opacity;
     }
     set_stroke(e) {

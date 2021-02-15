@@ -2,35 +2,12 @@
 <!doctype html>
 <html>
     <head>
-        <style>
-            #page svg {
-                width: 140mm;
-                height: 110mm;
-                border: 1px solid lightgray;
-            }
-            circle, rect, path,polyline {
-                fill: none;
-            }
-            line,circle,rect,path,polyline {
-                stroke-width: calc(0.7px/2);
-            }
-            svg :not([stroke]) {
-                stroke: black;
-            }
-        </style>
-        <script src="{{thing_js}}" defer type="module"></script>
-        <script type="module">
-            import {Controller} from "{% static 'controller.js' %}";
-            
-            new Controller(() => document.querySelector('#page svg'));
-        </script>
     </head>
     <body>
-        <div id="page">
-            <svg width="140" height="110" viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg">
-            </svg>
-        </div>
-
-        {% include "plottercontroller/controls.html" %}
+        <ul>
+            {% for thing in things %}
+            <li><a href="{% url 'thing' thing %}">{{thing}}</a></li>
+            {% endfor %}
+        </ul>
     </body>
 </html>

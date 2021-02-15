@@ -1,0 +1,20 @@
+The length, $L$, of an arithmetic spiral of $n$ turns with inner radius $R$ and layer thickness $h$ is
+
+
+
+
+
+
+\[\begin{align}
+ L &= \left(n\pi + \frac{r\pi}{h} \right) \sqrt{(R+nh)^2 + \frac{h^2}{4\pi^2}} \\
+&- \frac{R\pi}{h}\sqrt{R^2+\frac{h^2}{4\pi^2}} \\
+&+ \frac{h}{4\pi}\left\{\ln\left(\frac{h}{\pi}\sqrt{(R+nh)^2+\frac{h^2}{4\pi^2}} + \frac{nh^2}{\pi} + \frac{Rh}{\pi} \right)\right. \\
+&\left. -\ln\left(\frac{h}{\pi}\sqrt{R^2+\frac{h^2}{4\pi^2}}+\frac{Rh}{\pi}\right)\right\}
+\end{align} \]
+
+
+
+
+
+
+This formula is developed in the paper "How long is my toilet roll? – a simple exercise in mathematical modelling" by Peter R. Johnston.

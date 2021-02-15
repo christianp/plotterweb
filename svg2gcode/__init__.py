@@ -16,7 +16,7 @@ def path_filter(result, path):
                 path = s
                 break
     stroke_dash = path.values.get('stroke-dasharray')
-    if stroke_dash is not None:
+    if stroke_dash is not None and stroke_dash != 'none':
         try:
             pattern = [float(x) for x in stroke_dash.split(' ')]
         except ValueError:
@@ -99,7 +99,7 @@ def vpype_svg(svgcode):
         A string containing the processed SVG diagram.
     """
 
-    doc = vpype.read_multilayer_svg(StringIO(svgcode), quantization=0.1, path_filter=path_filter, crop=False)
+    doc = vpype.read_multilayer_svg(StringIO(svgcode), quantization=0.1, path_filter=path_filter, crop=True)
     doc = vpype_cli.execute('linemerge linesort', document = doc)
 
     return doc
@@ -121,7 +121,8 @@ def paths_to_plotter(plotter, doc):
     """
 
     for i,layer in doc.layers.items():
-        plotter.change_pen(i)
+        stroke = doc.layer_id_stroke(i)
+        plotter.change_pen(stroke)
         print(i,layer)
         for line in layer:
             plotter.move(im_to_tuple(line[0]))
@@ -139,3 +140,9 @@ def draw_svg(plotter, svgcode):
     doc = vpype_svg(svgcode)
     paths_to_plotter(plotter, doc)
 
+def show_svg(svgcode):
+    doc = vpype_svg(svgcode)
+    s = StringIO('')
+    vpype.write_svg(s,doc)
+    s.seek(0)
+    return s.read()

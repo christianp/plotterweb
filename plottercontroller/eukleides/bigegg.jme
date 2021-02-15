@@ -1,0 +1,8 @@
+eukleides("",let(
+  scale, 1,
+  curve, map(let(y,sqrt(1-x^2)*s*e^(p*x), point(scale*y,-scale*x*1.2)), x, -1..1#0.01)
+, egg, curve+map(reflect(p,line(origin,deg(90))),p,reverse(curve))
+, [
+  polygon(egg)
+]
+),["s":4/5,"p":0.25])

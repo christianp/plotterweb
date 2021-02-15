@@ -1,0 +1,58 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <title>{{thing}}</title>
+        <style>
+            :root {
+                --width: calc(297/2);
+                --height: calc(210/2);
+            }
+            #page svg {
+                width: calc(var(--width)*1mm);
+                height: calc(var(--height)*1mm);
+                border: 1px solid lightgray;
+            }
+            svg *:not([fill]) {
+                fill: none;
+            }
+            svg *:not([stroke-width]) {
+                stroke-width: calc(0.7px/2);
+            }
+
+            #page-controls {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                text-align: right;
+                grid-gap: 0 1em;
+                line-height: 1em;
+            }
+
+            #plotter-preview svg {
+                width: calc(var(--width)*1mm);
+                height: calc(var(--height)*1mm);
+            }
+
+            #plotter-preview svg * {
+                stroke-width: 0.5;
+            }
+        </style>
+        {% include "plottercontroller/mathjax_script.html" %}
+
+        <script src="{{thing_js}}" defer type="module"></script>
+        <script type="module">
+            import {Controller} from "{% static 'controller.js' %}";
+            
+            window.controller= new Controller(() => document.querySelector('#page svg'));
+        </script>
+    </head>
+    <body>
+        <div id="page">
+            <svg width="148.5" height="105" viewBox="0 0 148.5 105" xmlns="http://www.w3.org/2000/svg">
+            </svg>
+        </div>
+        <div id="page-controls"></div>
+
+        {% include "plottercontroller/controls.html" %}
+    </body>
+</html>

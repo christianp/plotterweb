@@ -4,10 +4,12 @@
     <head>
         <meta charset="utf-8">
         <title>Numbas Eukleides extension playground</title>
+        <script src="{% static "rough.js" %}"></script>
         <script src="{% static "eukleides/lib/jme-runtime.js" %}"></script>
         <script src="{% static "eukleides/lib/locales.js" %}"></script>
         <script src="{% static "eukleides/extension.js" %}"></script>
         <script src="{% static "eukleides/dev_playground.js" %}" type="module"></script>
+        <link rel="stylesheet" href="{% static 'controller.css' %}"/>
         <style>
 body {
     display: grid;
@@ -47,7 +49,7 @@ body > * {
 #code {
     grid-row: a / b;
     padding: 1em;
-    font-size: 1.5em;
+    font-size: 1em;
     height: 100%;
     margin: 0;
     border: 0;
